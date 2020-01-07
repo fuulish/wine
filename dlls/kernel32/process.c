@@ -1154,3 +1154,9 @@ BOOL WINAPI BaseFlushAppcompatCache(void)
     SetLastError(ERROR_CALL_NOT_IMPLEMENTED);
     return FALSE;
 }
+
+
+BOOL WINAPI SetEnvironmentStringsW(LPWCH NewEnvironment)
+{
+    return TRUE;
+}

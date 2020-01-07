@@ -1387,7 +1387,7 @@
 # @ stub SetDynamicTimeZoneInformation
 @ stdcall -import SetEndOfFile(long)
 # @ stub SetEnvironmentStringsA
-# @ stub SetEnvironmentStringsW
+@ stdcall SetEnvironmentStringsW (long ptr wstr)
 @ stdcall -import SetEnvironmentVariableA(str str)
 @ stdcall -import SetEnvironmentVariableW(wstr wstr)
 @ stdcall -import SetErrorMode(long)
