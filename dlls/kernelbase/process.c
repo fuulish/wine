@@ -1345,6 +1345,12 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentVariableW( LPCWSTR name, LPCWSTR val
 }
 
 
+BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW(LPWCH NewEnvironment)
+{
+    return TRUE;
+}
+
+
 /***********************************************************************
  * Process/thread attribute lists
  ***********************************************************************/
