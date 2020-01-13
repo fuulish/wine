@@ -1360,7 +1360,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW(LPWCH NewEnvironment)
     var = wcstok(NewEnvironment, delim);
     val = wcstok(NULL, delim);
 
-    while ( (val != NULL) && (var != NULL) && TRUE == rc) {
+    while ( (val != NULL) && (var != NULL) && (TRUE == rc) ) {
         rc = SetEnvironmentVariableW(var, val);
         var = wcstok(NULL, delim);
         val = wcstok(NULL, delim);
