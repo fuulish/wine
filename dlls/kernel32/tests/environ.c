@@ -579,6 +579,49 @@ static void test_GetEnvironmentStringsW(void)
     FreeEnvironmentStringsW(env2);
 }
 
+static void test_SetEnvironmentStringsW(void)
+{
+    WCHAR buf[256];
+    BOOL ret;
+    DWORD ret_size;
+
+    static WCHAR name[] = L"Name";
+    static WCHAR value[] = L"Value";
+    static WCHAR env[] = L"Name=Value";
+
+    static WCHAR eman[] = L"emaN";
+    static WCHAR eulav[] = L"eulaV";
+    static WCHAR vne[] = L"emaN=eulaV";
+
+    static WCHAR var[] = L"Var";
+    static WCHAR val[] = L"Val";
+    static WCHAR rav[] = L"raV";
+    static WCHAR lav[] = L"laV";
+    static WCHAR mul[] = L"Var=Val raV=laV";
+
+    ret = SetEnvironmentStringsW(env);
+
+    ret_size = GetEnvironmentVariableW(name, buf, sizeof(buf));
+    ok( ((0 == ret_size) || (0 == wcscmp(buf, value))),
+       "Environment String settings resulted in different value", ret_size);
+
+    ret = SetEnvironmentStringsW(vne);
+
+    ret_size = GetEnvironmentVariableW(eman, buf, sizeof(buf));
+    ok( ((0 == ret_size) || (0 == wcscmp(buf, eulav))),
+       "Environment String settings resulted in different value", ret_size);
+
+    ret = SetEnvironmentStringsW(mul);
+
+    ret_size = GetEnvironmentVariableW(var, buf, sizeof(buf));
+    ok( ((0 == ret_size) || (0 == wcscmp(buf, val))),
+       "Environment String settings resulted in different value", ret_size);
+
+    ret_size = GetEnvironmentVariableW(rav, buf, sizeof(buf));
+    ok( ((0 == ret_size) || (0 == wcscmp(buf, lav))),
+       "Environment String settings resulted in different value", ret_size);
+}
+
 START_TEST(environ)
 {
     init_functionpointers();
@@ -591,4 +634,5 @@ START_TEST(environ)
     test_GetComputerNameExA();
     test_GetComputerNameExW();
     test_GetEnvironmentStringsW();
+    test_SetEnvironmentStringsW();
 }
