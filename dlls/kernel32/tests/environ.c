@@ -581,7 +581,8 @@ static void test_GetEnvironmentStringsW(void)
 
 static void test_SetEnvironmentStringsW(void)
 {
-    WCHAR buf[256];
+    static WCHAR buf[256];
+    DWORD buf_len;
     BOOL ret;
     DWORD ret_size;
 
@@ -599,27 +600,38 @@ static void test_SetEnvironmentStringsW(void)
     static WCHAR lav[] = L"laV";
     static WCHAR mul[] = L"Var=Val raV=laV";
 
+    static WCHAR empty[] = L"Var=";
+
+    buf_len = sizeof(buf) / 2;
+
     ret = SetEnvironmentStringsW(env);
 
-    ret_size = GetEnvironmentVariableW(name, buf, sizeof(buf));
-    ok( ((0 == ret_size) || (0 == wcscmp(buf, value))),
+    ret_size = GetEnvironmentVariableW(name, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, value))),
        "Environment String settings resulted in different value", ret_size);
 
     ret = SetEnvironmentStringsW(vne);
 
-    ret_size = GetEnvironmentVariableW(eman, buf, sizeof(buf));
-    ok( ((0 == ret_size) || (0 == wcscmp(buf, eulav))),
+    ret_size = GetEnvironmentVariableW(eman, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, eulav))),
        "Environment String settings resulted in different value", ret_size);
 
     ret = SetEnvironmentStringsW(mul);
 
-    ret_size = GetEnvironmentVariableW(var, buf, sizeof(buf));
-    ok( ((0 == ret_size) || (0 == wcscmp(buf, val))),
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, val))),
        "Environment String settings resulted in different value", ret_size);
 
-    ret_size = GetEnvironmentVariableW(rav, buf, sizeof(buf));
-    ok( ((0 == ret_size) || (0 == wcscmp(buf, lav))),
+    ret_size = GetEnvironmentVariableW(rav, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, lav))),
        "Environment String settings resulted in different value", ret_size);
+
+    ret = SetEnvironmentStringsW(empty);
+
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( (0 == ret_size),
+       "Environment String settings resulted in different value", ret_size);
+
 }
 
 START_TEST(environ)
