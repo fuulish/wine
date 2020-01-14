@@ -1345,7 +1345,10 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentVariableW( LPCWSTR name, LPCWSTR val
 }
 
 
-BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW(LPWCH NewEnvironment)
+/***********************************************************************
+ *           SetEnvironmentStringsW   (kernelbase.@)
+ */
+BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( LPWCH NewEnvironment )
 {
 
     TRACE( "(%s)\n", debugstr_w(NewEnvironment));
