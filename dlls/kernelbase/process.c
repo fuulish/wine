@@ -1352,13 +1352,13 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( LPWCH NewEnvironment )
 {
 
     TRACE( "(%s)\n", debugstr_w(NewEnvironment));
-    BOOL rc = TRUE;
+    BOOL rc = FALSE;
 
     LPWCH var, val;
-    PCWCH delim = L" =\n"; // Extrapolated from what I've seen...
+    PCWCH delim = L" =\n";
 
     if (NULL == NewEnvironment)
-        return rc; // allow for null value? Why call if nothing to set...?
+        return rc;
 
     var = wcstok(NewEnvironment, delim);
     val = wcstok(NULL, delim);
