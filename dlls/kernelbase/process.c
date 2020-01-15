@@ -1346,6 +1346,60 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentVariableW( LPCWSTR name, LPCWSTR val
 
 
 /***********************************************************************
+ *           SetEnvironmentStringsW   (kernelbase.@)
+ */
+BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( WCHAR *env )
+{
+    BOOL rc = FALSE;
+    WCHAR *var, *val, *buff, *end, *tmp;
+    size_t bufflen = 0;
+
+    TRACE( "(%p)\n", env);
+
+    if (!env)
+        return rc;
+
+    if ( !(bufflen = get_env_length(env)))
+        return rc;
+
+    if (NULL == (buff = HeapAlloc(GetProcessHeap(), 0, bufflen * sizeof(WCHAR))))
+        return rc;
+
+    memcpy(buff, env, bufflen * sizeof(WCHAR));
+    end = buff +bufflen;
+
+    // FUX: clear environment that's there
+
+    var = buff;
+
+    if (!*(buff +bufflen) && !*(buff +bufflen -1))
+        return FALSE;
+
+    while (var < end-2) {
+        if (NULL == (val = wcschr(var, L'=')))
+            break;
+        *val++ = L'\0';
+
+        tmp = wcschr(val, L'=');
+        if (NULL != tmp && wcschr(val, L'\0') > tmp)
+            return FALSE;
+
+        if (FALSE == (rc = SetEnvironmentVariableW(var, val)))
+            break;
+
+        if (NULL == (var = wcschr(val, L'\0')))
+            break;
+
+        ++var;
+    }
+
+    HeapFree(GetProcessHeap(), 0, buff);
+
+    return rc;
+}
+
+
+/***********************************************************************
  * Process/thread attribute lists
  ***********************************************************************/
 

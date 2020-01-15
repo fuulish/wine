@@ -602,6 +602,90 @@ static void test_GetEnvironmentStringsW(void)
     FreeEnvironmentStringsW(env2);
 }
 
+static void test_SetEnvironmentStringsW(void)
+{
+    DWORD buf_len;
+    BOOL ret;
+    DWORD ret_size;
+
+    WCHAR buf[256];
+
+    WCHAR name[] = {'N','a','m','e',0};
+    WCHAR value[] = {'V','a','l','u','e',0};
+    WCHAR env[] = {'N','a','m','e','=','V','a','l','u','e',0,0};
+
+    WCHAR eman[] = {'e','m','a','N',0};
+    WCHAR eulav[] = {'e','u','l','a','V',0};
+    WCHAR vne[] = {'e','m','a','N','=','e','u','l','a','V',0,0};
+
+    WCHAR var[] = {'V','a','r',0};
+    WCHAR val[] = {'V','a','l',0};
+    WCHAR rav[] = {'r','a','V',0};
+    WCHAR lav[] = {'l','a','V',0};
+    WCHAR mul[] = {'V','a','r','=','V','a','l',0,'r','a','V','=','l','a','V',0,0};
+
+    WCHAR empty[] = {'V','a','r','=',0,0};
+
+    WCHAR fwlt1[] = {'V','a','r',0,0};
+    WCHAR fwlt2[] = {'V','a','r'};
+    WCHAR fwlt3[] = {'V','a','r','=','V','a','l','=','r','a','V',0,0};
+    WCHAR fwlt4[] = {'V','a','r','=','V','a','l','=','r','a','V',0};
+    WCHAR fwlt5[] = {'=','V','a','l',0,0};
+
+    buf_len = ARRAY_SIZE(buf);
+
+    ret = SetEnvironmentStringsW(env);
+    ok( ret, "Setting environment strings failed with ret=%d\n", ret );
+
+    ret_size = GetEnvironmentVariableW(name, buf, buf_len);
+    ok( ((ARRAY_SIZE(value)-1 == ret_size) && (0 == wcscmp(buf, value))),
+       "Difference in env, expected (%s) gotten (%s)\n",
+       debugstr_w(value), debugstr_w(buf));
+
+    ret = SetEnvironmentStringsW(vne);
+    ok( ret, "Setting environment strings failed with ret=%d\n", ret );
+
+    ret_size = GetEnvironmentVariableW(eman, buf, buf_len);
+    ok( ((ARRAY_SIZE(eulav)-1 == ret_size) && (0 == wcscmp(buf, eulav))),
+       "Difference in env, expected (%s) gotten (%s)\n",
+       debugstr_w(eulav), debugstr_w(buf));
+
+    ret = SetEnvironmentStringsW(mul);
+    ok( ret, "Setting environment strings failed with ret=%d\n", ret);
+
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( ((ARRAY_SIZE(val)-1 == ret_size) && (0 == wcscmp(buf, val))),
+       "Difference in env, expected (%s) gotten (%s)\n",
+       debugstr_w(val), debugstr_w(buf));
+
+    ret_size = GetEnvironmentVariableW(rav, buf, buf_len);
+    ok( ((ARRAY_SIZE(lav)-1 == ret_size) && (0 == wcscmp(buf, lav))),
+       "Difference in env, expected (%s) gotten (%s)\n",
+       debugstr_w(lav), debugstr_w(buf));
+
+    ret = SetEnvironmentStringsW(empty);
+    ok( ret, "Setting empty environment failed with ret=%d\n", ret);
+
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( (0 == ret_size),
+       "Difference in env, should have been null, is (%s)\n", debugstr_w(buf));
+
+    ret = SetEnvironmentStringsW(fwlt1);
+    ok( FALSE == ret, "Non-environment string did not fail as expected, ret=%d\n", ret);
+
+    ret = SetEnvironmentStringsW(fwlt2);
+    ok( FALSE == ret, "Non-environment string did not fail as expected, ret=%d\n", ret);
+
+    ret = SetEnvironmentStringsW(fwlt3);
+    ok( FALSE == ret, "Non-environment string did not fail as expected, ret=%d\n", ret);
+
+    ret = SetEnvironmentStringsW(fwlt4);
+    ok( FALSE == ret, "Non-environment string did not fail as expected, ret=%d\n", ret);
+
+    ret = SetEnvironmentStringsW(fwlt5);
+    ok( FALSE == ret, "Non-environment string did not fail as expected, ret=%d\n", ret);
+}
+
 START_TEST(environ)
 {
     init_functionpointers();
@@ -614,4 +698,5 @@ START_TEST(environ)
     test_GetComputerNameExA();
     test_GetComputerNameExW();
     test_GetEnvironmentStringsW();
+    test_SetEnvironmentStringsW();
 }
