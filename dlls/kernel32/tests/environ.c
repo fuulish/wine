@@ -579,6 +579,66 @@ static void test_GetEnvironmentStringsW(void)
     FreeEnvironmentStringsW(env2);
 }
 
+static void test_SetEnvironmentStringsW(void)
+{
+    DWORD buf_len;
+    BOOL ret;
+    DWORD ret_size;
+
+    static WCHAR buf[256];
+
+    static WCHAR name[] = {'N','a','m','e',0};
+    static WCHAR value[] = {'V','a','l','u','e',0};
+    static WCHAR env[] = {'N','a','m','e','=','V','a','l','u','e',0};
+
+    static WCHAR eman[] = {'e','m','a','N',0};
+    static WCHAR eulav[] = {'e','u','l','a','V',0};
+    static WCHAR vne[] = {'e','m','a','N','=','e','u','l','a','V',0};
+
+    static WCHAR var[] = {'V','a','r',0};
+    static WCHAR val[] = {'V','a','l',0};
+    static WCHAR rav[] = {'r','a','V',0};
+    static WCHAR lav[] = {'l','a','V',0};
+    static WCHAR mul[] = {'V','a','r','=','V','a','l',' ','r','a','V','=','l','a','V',0};
+
+    static WCHAR empty[] = {'V','a','r','=',0};
+
+    buf_len = sizeof(buf) / 2;
+
+    ret = SetEnvironmentStringsW(env);
+    ok( ret, "Setting environment strings failed\n" );
+
+    ret_size = GetEnvironmentVariableW(name, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, value))),
+       "Environment String settings resulted in different value\n");
+
+    ret = SetEnvironmentStringsW(vne);
+    ok( ret, "Setting environment strings failed\n" );
+
+    ret_size = GetEnvironmentVariableW(eman, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, eulav))),
+       "Environment String settings resulted in different value\n");
+
+    ret = SetEnvironmentStringsW(mul);
+    ok( ret, "Setting environment strings failed\n" );
+
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, val))),
+       "Environment String settings resulted in different value\n");
+
+    ret_size = GetEnvironmentVariableW(rav, buf, buf_len);
+    ok( ((0 != ret_size) && (0 == wcscmp(buf, lav))),
+       "Environment String settings resulted in different value\n");
+
+    ret = SetEnvironmentStringsW(empty);
+    ok( ret, "Setting environment strings failed\n" );
+
+    ret_size = GetEnvironmentVariableW(var, buf, buf_len);
+    ok( (0 == ret_size),
+       "Environment String settings resulted in different value\n");
+
+}
+
 START_TEST(environ)
 {
     init_functionpointers();
@@ -591,4 +651,5 @@ START_TEST(environ)
     test_GetComputerNameExA();
     test_GetComputerNameExW();
     test_GetEnvironmentStringsW();
+    test_SetEnvironmentStringsW();
 }

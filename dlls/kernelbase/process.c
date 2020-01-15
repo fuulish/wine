@@ -1346,6 +1346,35 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentVariableW( LPCWSTR name, LPCWSTR val
 
 
 /***********************************************************************
+ *           SetEnvironmentStringsW   (kernelbase.@)
+ */
+BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( LPWCH NewEnvironment )
+{
+
+    BOOL rc = FALSE;
+    WCHAR *var, *val;
+    const WCHAR delim[] = {' ','=','\n',0};
+
+    TRACE( "(%s)\n", debugstr_w(NewEnvironment));
+
+    if (NULL == NewEnvironment)
+        return rc;
+
+    var = wcstok(NewEnvironment, delim);
+    val = wcstok(NULL, delim);
+
+    while (var != NULL) {
+        if (FALSE == (rc = SetEnvironmentVariableW(var, val)))
+            break;
+        var = wcstok(NULL, delim);
+        val = wcstok(NULL, delim);
+    }
+
+    return rc;
+}
+
+
+/***********************************************************************
  * Process/thread attribute lists
  ***********************************************************************/
 
