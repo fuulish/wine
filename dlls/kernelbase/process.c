@@ -1356,18 +1356,28 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( LPWCH NewEnvironment )
     const WCHAR delim[] = {' ','=','\n',0};
 
     TRACE( "(%s)\n", debugstr_w(NewEnvironment));
+    FIXME( "FUX| FULL STRING(%s)\n", debugstr_w(NewEnvironment));
+    // printf( "FUX| FULL STRING(%s)\n", NewEnvironment);
 
     if (NULL == NewEnvironment)
         return rc;
 
     var = wcstok(NewEnvironment, delim);
+    FIXME( "FUX| var: (%s)\n", debugstr_w(var));
+    // printf( "FUX| var: (%s)\n", var);
     val = wcstok(NULL, delim);
+    FIXME( "FUX| val: (%s)\n", debugstr_w(val));
+    // printf( "FUX| val: (%s)\n", val);
 
     while (var != NULL) {
         if (FALSE == (rc = SetEnvironmentVariableW(var, val)))
             break;
         var = wcstok(NULL, delim);
+        FIXME( "FUX| var: (%s)\n", debugstr_w(var));
+        // printf( "FUX| var: (%s)\n", var);
         val = wcstok(NULL, delim);
+        FIXME( "FUX| val: (%s)\n", debugstr_w(val));
+        // printf( "FUX| val: (%s)\n", val);
     }
 
     return rc;
