@@ -1353,7 +1353,7 @@ BOOL WINAPI DECLSPEC_HOTPATCH SetEnvironmentStringsW( LPWCH NewEnvironment )
 
     BOOL rc = FALSE;
     WCHAR *var, *val;
-    const WCHAR delim[] = {' ','=','\n',0};
+    const WCHAR delim[] = {'=',0};
 
     TRACE( "(%s)\n", debugstr_w(NewEnvironment));
     FIXME( "FUX| FULL STRING(%s)\n", debugstr_w(NewEnvironment));

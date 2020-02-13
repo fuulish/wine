@@ -599,7 +599,7 @@ static void test_SetEnvironmentStringsW(void)
     static WCHAR val[] = {'V','a','l',0};
     static WCHAR rav[] = {'r','a','V',0};
     static WCHAR lav[] = {'l','a','V',0};
-    static WCHAR mul[] = {'V','a','r','=','V','a','l',' ','r','a','V','=','l','a','V',0};
+    static WCHAR mul[] = {'V','a','r','=','V','a','l',0,'r','a','V','=','l','a','V',0,0};
 
     static WCHAR empty[] = {'V','a','r','=',0};
 
