@@ -600,6 +600,8 @@ static void test_SetEnvironmentStringsW(void)
     static WCHAR rav[] = {'r','a','V',0,0};
     static WCHAR lav[] = {'l','a','V',0,0};
     static WCHAR mul[] = {'V','a','r','=','V','a','l',0,'r','a','V','=','l','a','V',0,0};
+    // FUX: this should give an error
+    static WCHAR mul_nonnull[] = {'V','a','r','=','V','a','l',0,'r','a','V','=','l','a','V',0};
 
     static WCHAR empty[] = {'V','a','r','=',0,0};
 
@@ -618,6 +620,9 @@ static void test_SetEnvironmentStringsW(void)
     ret_size = GetEnvironmentVariableW(eman, buf, buf_len);
     ok( ((0 != ret_size) && (0 == wcscmp(buf, eulav))),
        "Environment String settings resulted in different value\n");
+
+    ret = SetEnvironmentStringsW(mul_nonnull);
+    ok( FALSE != ret, "Setting environment strings failed\n" );
 
     ret = SetEnvironmentStringsW(mul);
     ok( ret, "Setting environment strings failed\n" );
