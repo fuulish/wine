@@ -587,21 +587,21 @@ static void test_SetEnvironmentStringsW(void)
 
     static WCHAR buf[256];
 
-    static WCHAR name[] = {'N','a','m','e',0};
-    static WCHAR value[] = {'V','a','l','u','e',0};
-    static WCHAR env[] = {'N','a','m','e','=','V','a','l','u','e',0};
+    static WCHAR name[] = {'N','a','m','e',0,0};
+    static WCHAR value[] = {'V','a','l','u','e',0,0};
+    static WCHAR env[] = {'N','a','m','e','=','V','a','l','u','e',0,0};
 
-    static WCHAR eman[] = {'e','m','a','N',0};
-    static WCHAR eulav[] = {'e','u','l','a','V',0};
-    static WCHAR vne[] = {'e','m','a','N','=','e','u','l','a','V',0};
+    static WCHAR eman[] = {'e','m','a','N',0,0};
+    static WCHAR eulav[] = {'e','u','l','a','V',0,0};
+    static WCHAR vne[] = {'e','m','a','N','=','e','u','l','a','V',0,0};
 
-    static WCHAR var[] = {'V','a','r',0};
-    static WCHAR val[] = {'V','a','l',0};
-    static WCHAR rav[] = {'r','a','V',0};
-    static WCHAR lav[] = {'l','a','V',0};
+    static WCHAR var[] = {'V','a','r',0,0};
+    static WCHAR val[] = {'V','a','l',0,0};
+    static WCHAR rav[] = {'r','a','V',0,0};
+    static WCHAR lav[] = {'l','a','V',0,0};
     static WCHAR mul[] = {'V','a','r','=','V','a','l',0,'r','a','V','=','l','a','V',0,0};
 
-    static WCHAR empty[] = {'V','a','r','=',0};
+    static WCHAR empty[] = {'V','a','r','=',0,0};
 
     buf_len = sizeof(buf) / 2;
 
