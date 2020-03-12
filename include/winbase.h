@@ -2622,6 +2622,7 @@ WINBASEAPI BOOL        WINAPI SetEndOfFile(HANDLE);
 WINBASEAPI BOOL        WINAPI SetEnvironmentVariableA(LPCSTR,LPCSTR);
 WINBASEAPI BOOL        WINAPI SetEnvironmentVariableW(LPCWSTR,LPCWSTR);
 #define                       SetEnvironmentVariable WINELIB_NAME_AW(SetEnvironmentVariable)
+WINBASEAPI BOOL        WINAPI SetEnvironmentStringsW(WCHAR *);
 WINBASEAPI UINT        WINAPI SetErrorMode(UINT);
 WINBASEAPI BOOL        WINAPI SetEvent(HANDLE);
 WINBASEAPI VOID        WINAPI SetFileApisToANSI(void);
